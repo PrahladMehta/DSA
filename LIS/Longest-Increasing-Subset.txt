@@ -1,0 +1,95 @@
+
+
+
+==============================Leet code - 368          ===================================
+==============================Longest Divisible Subset ===================================     
+
+
+Recursion approach  O(2^n): 
+
+class solution{
+
+   public void lds(int nums[],List<Integer> ans,List<Integer> temp,int i,int prev){
+        if(i>=nums.length){
+             if(ans.size()<temp.size()){
+                ans.clear();  //   ans= new ArrayList<>(); don't use beacuse the previous stack will point to the same ans not this one .
+                ans.addAll(temp);                   
+             }
+             return;
+        }
+        if(nums[i]%prev==0){
+           temp.add(nums[i]);
+           lds(nums,ans,temp,i+1,nums[i]);
+           temp.remove(temp.size()-1);
+        }
+        lds(nums,ans,temp,i+1,prev);
+    }
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+
+
+        List<Integer> ans=new ArrayList<>();
+        List<Integer> temp=new ArrayList<>();
+        
+        Arrays.sort(nums);
+        lds(nums,ans,temp,0,1);
+
+        return ans;
+    }
+
+    }
+
+
+
+Bottom up approach:  O(N*N)
+
+  
+  class Solution {
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        int dp[]=new int[nums.length];   // for storing the previous length .
+
+        Arrays.sort(nums);  
+        Arrays.fill(dp,1);
+
+        int temp[]=new int[nums.length];
+
+        Arrays.fill(temp,-1);
+
+        int ans=0;
+        int last=1;
+
+        for(int i=0;i<nums.length;i++){
+                 int curr=0;
+                    for(int j=0;j<i;j++){
+                            if(nums[i]%nums[j]==0){
+                                dp[i]=dp[j]+1;
+
+                                if(curr<dp[i]){
+                                    curr=dp[i];
+                                    temp[i]=j;
+                                }
+                            }
+                    }
+                    if(curr>last){
+                    last=curr;
+                    ans=i;
+                    }
+        }
+
+        List<Integer> temp1=new ArrayList<>();
+
+        while(ans!=-1){
+            temp1.add(nums[ans]);
+            ans=temp[ans];
+        }
+
+        return temp1;
+
+        
+    }
+}
+
+
+
+
+
+
