@@ -1,0 +1,118 @@
+
+----------- Longest Increasing Subset -----------------------
+
+
+ class solution{
+
+   public int lis(int nums[],int i,int prev){
+
+        if(i>nums.length){
+             return 0;
+        }
+
+        if(prev<nums[i]){
+
+             return Math.max(lis(nums,i+1,nums[i])+1,lis(nums,i+1,prev));
+        }
+
+        return lis(nums,i+1,prev);
+
+
+      
+    }
+    public int largestIncresingSubsequence(int[] nums) {
+    
+       return lis(nums,0,0);
+
+    }
+
+    }
+
+
+    Time Complexity : O(2^N)
+
+
+    ------------------------------- optimized --------------------------------
+
+  // we have to calculate the previous value , number of element smaller then  current value only .
+
+  for example:
+
+    [10,4,6,7,8,24,9]
+
+    there calculation of the previous values are
+
+    [0,0,1,2,3,4,4]
+
+ class solution{
+
+    public int largestIncresingSubsequence(int[] nums) {
+
+
+
+        int dp[]=new int[nums.length];
+        int ans=0;
+
+        for(int i=0;i<nums.length;i++){
+              
+              for(int j=0;j<i;nums.length){
+                   
+                     if(nums[i]>nums[j]){
+                        dp[i]=Math.max(dp[j]+1,dp[i]);
+                        ans=Math.max(dp[i],ans);
+                     }
+              }
+        }
+    
+     return ans;
+        
+
+    }
+
+    }
+
+
+TC: N*N
+SC:N*N
+
+
+
+---------------------optimized - code ------------------
+
+
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        if (n < 2) {
+            return n;
+        } 
+        int[] values = new int[n];
+        values[0] = nums[0];
+        int index = 0;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > values[index]) {
+                index++;
+                values[index] = nums[i];
+            } else {
+                int left = 0;
+                int right = index;
+                while (left < right) {
+                    int mid = left + (right - left) / 2;
+                    if (values[mid] < nums[i]) {
+                        left = mid + 1;
+                    } else {
+                        right = mid;
+                    }
+                }
+                values[left] = nums[i];
+            }
+        }
+        return index + 1;
+    }
+}
+
+
+TC: O(Nlog(N))
+SC:O(N)
+
