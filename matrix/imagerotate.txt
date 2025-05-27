@@ -1,0 +1,72 @@
+
+
+-------------------------------with using extra space ------------
+
+swape((i,j),(n-i,j))
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        
+          int n=matrix.length;
+
+          int mat[][]=new int[n][n];
+
+          for(int i=0;i<n;i++){
+               for(int j=0;j<n;j++){
+                   mat[j][n-i-1]=matrix[i][j];
+               }
+          }
+
+          for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                matrix[i][j]=mat[i][j];
+            }
+          }
+    }
+}
+
+
+
+------------------------------------without using the extra space--------------------------------------
+steps:
+1. transpose 
+2. reverse the row
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        
+           
+           int i=0;
+          
+
+           int n=matrix.length;
+
+           while(i<n){
+
+                for(int j=i+1;j<n;j++){
+                    matrix[i][j]+=matrix[j][i];
+                    matrix[j][i]=matrix[i][j]-matrix[j][i];
+                    matrix[i][j]=matrix[i][j]-matrix[j][i];
+                }
+                i++;
+              
+           }
+
+           i=0;
+           while(i<n){
+            int st=0;
+            int end=n-1;
+            while(st<end){
+                matrix[i][st]+=matrix[i][end];
+                matrix[i][end]=matrix[i][st]-matrix[i][end];
+                matrix[i][st]=matrix[i][st]-matrix[i][end];
+                st++;
+                end--;
+            }
+            i++;         
+           }
+
+
+
+    }
+}
